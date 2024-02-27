@@ -31,7 +31,8 @@ urlpatterns = [
     path('shop', views.all_shop),
     path('addshop',views.add_shop),
     path('adddish',views.add_dish),
-    path('menu/<int:shop_id>',views.get_menu)
+    path('menu/<int:shop_id>',views.get_menu),
+    path('deletedish/<int:dish_id>',views.delete_dish),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

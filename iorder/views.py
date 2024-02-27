@@ -195,6 +195,15 @@ def add_dish(request, format=None):
             return JsonResponse({'error': str(e)}, status=400)
 
 
+@api_view(['POST'])
+def delete_dish(request, dish_id):
+    try:
+        dish = Dish.objects.get(dish_index=dish_id)
+        dish.delete()
+        return  JsonResponse({'message': 'Dish deleted successfully'}, status=201)
+    except Exception as e:
+        return  JsonResponse({'error:': str(e)}, status=400)
+
 @api_view(['GET'])
 def get_menu(request, shop_id):
     try:
@@ -203,6 +212,7 @@ def get_menu(request, shop_id):
         for dish in mymenu:
             list.append(
                 {
+                    'dish_index': dish.dish_index,
                     'shop_index': dish.shop_index.shop_index,
                     'dish_name': dish.dish_name,
                     'price':dish.price,
