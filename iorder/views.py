@@ -182,8 +182,9 @@ def add_dish(request, format=None):
             new_dish = Dish.objects.create(
                 dish_index=Dish.objects.count(),
                 dish_name=data.get('dish_name'),
-                shop_index=data.get('shop_index'),
+                shop_index=Shop.objects.get(shop_index=data.get('shop_index')),
                 price=data.get('price'),
+                description=data.get('description'),
                 vegan=data.get('vegan'),
             )
             image_file = request.FILES.get('image')

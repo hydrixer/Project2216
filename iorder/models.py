@@ -26,6 +26,7 @@ class Dish(models.Model):
     shop_index = models.ForeignKey('Shop', models.DO_NOTHING, db_column='shop_index')
     price = models.IntegerField()
     vegan = models.BooleanField()
+    description = models.TextField()
     image = models.ImageField(upload_to='media/covers')
 
     class Meta:
