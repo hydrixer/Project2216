@@ -195,7 +195,7 @@ def add_dish(request, format=None):
             return JsonResponse({'error': str(e)}, status=400)
 
 
-@api_view(['POST'])
+@api_view(['DELETE'])
 def delete_dish(request, dish_id):
     try:
         dish = Dish.objects.get(dish_index=dish_id)
