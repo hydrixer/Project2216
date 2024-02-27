@@ -183,7 +183,7 @@ def add_dish(request, format=None):
                 shop_index=Shop.objects.get(shop_index=data.get('shop_index')),
                 price=data.get('price'),
                 description=data.get('description'),
-                vegan=data.get('vegan'),
+                vegan = True if data.get('vegan') == "true" else False,
             )
             image_file = request.FILES.get('image')
             if image_file:
