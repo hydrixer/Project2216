@@ -78,8 +78,6 @@ def all_shop(request):
                 {
                     'shop_index': ashop.shop_index,
                     'name': ashop.shop_name,
-                    'canteen_num': ashop.canteen_num,
-                    'floor': ashop.floor,
                     'isselling': ashop.isselling,
                     'logo': ashop.image.url if ashop.image else None,
                 }
@@ -209,6 +207,7 @@ def get_menu(request, shop_id):
                     'dish_name': dish.dish_name,
                     'price':dish.price,
                     'vegan': dish.vegan,
+                    'description':dish.description,
                     'image': dish.image.url if dish.image else None,
                 }
             )
