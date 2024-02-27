@@ -61,8 +61,6 @@ def check_shop(request, shop_id):
             "data":{
                     'shop_index': shop.shop_index,
                     'name': shop.shop_name,
-                    'canteen_num': shop.canteen_num,
-                    'floor': shop.floor,
                     'isselling': shop.isselling,
                     'logo': shop.image.url if shop.image else None
             }
@@ -73,7 +71,6 @@ def check_shop(request, shop_id):
 
 def all_shop(request):
     try:
-
         first_shops = Shop.objects.all()
         list=[]
         for ashop in first_shops:
@@ -163,29 +160,31 @@ def all_dish(request,shop_index):
     except Shop.DoesNotExist:
         return JsonResponse({'error': 'Dish not found'}, status=404)
 
-def all_vegan_dish(request,shop_index):
-    try:
-        first_vegan_dish = Dish.objects.filter(vegan=True,shop_index=shop_index)
-        dish_list = get_dish_list(first_vegan_dish)
-        dish_data = {
-            "code": 200,
-            "msg": "success",
-            "data":{
-                "list": dish_list
-            }
-        }
-        return JsonResponse(dish_data, safe=False)
-    except Shop.DoesNotExist:
-        return JsonResponse({'error': 'Vegan dish not found'}, status=404)
+# def all_vegan_dish(request,shop_index):
+#     try:
+#         first_vegan_dish = Dish.objects.filter(vegan=True,shop_index=shop_index)
+#         dish_list = get_dish_list(first_vegan_dish)
+#         dish_data = {
+#             "code": 200,
+#             "msg": "success",
+#             "data":{
+#                 "list": dish_list
+#             }
+#         }
+#         return JsonResponse(dish_data, safe=False)
+#     except Shop.DoesNotExist:
+#         return JsonResponse({'error': 'Vegan dish not found'}, status=404)
 
+@api_view(['POST'])
 def add_dish(request, format=None):
         data = request.data
         try:
             new_dish = Dish.objects.create(
+                dish_index=Dish.objects.count(),
                 dish_name=data.get('dish_name'),
                 shop_index=data.get('shop_index'),
                 price=data.get('price'),
-                vegan=data.get('vegan', False),
+                vegan=data.get('vegan'),
             )
             image_file = request.FILES.get('image')
             if image_file:
@@ -195,6 +194,34 @@ def add_dish(request, format=None):
             return JsonResponse({'message': 'Dish created successfully'}, status=201)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
+
+
+@api_view(['GET'])
+def get_menu(request, shop_id):
+    try:
+        mymenu = Dish.objects.filter(shop_index=shop_id)
+        list=[]
+        for dish in mymenu:
+            list.append(
+                {
+                    'shop_index': dish.shop_index.shop_index,
+                    'dish_name': dish.dish_name,
+                    'price':dish.price,
+                    'vegan': dish.vegan,
+                    'image': dish.image.url if dish.image else None,
+                }
+            )
+        menu_data = {
+            "code": 200,
+            "msg": "success",
+            "data":{
+                "list": list
+            }
+        }
+        return JsonResponse(menu_data, safe=False)
+    except Dish.DoesNotExist:
+        return JsonResponse({'error': 'Shopmenu not found'}, status=404)
+
 
 def user_detail(request, user_id, format=None):
     try:

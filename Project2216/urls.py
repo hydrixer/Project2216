@@ -30,7 +30,8 @@ urlpatterns = [
     path('shop/<int:shop_id>', views.check_shop, name='check_shop'),
     path('shop', views.all_shop),
     path('addshop',views.add_shop),
-    path('adddish',views.add_dish)
+    path('adddish',views.add_dish),
+    path('menu/<int:shop_id>',views.get_menu)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
