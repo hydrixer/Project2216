@@ -1,6 +1,6 @@
 from django.core.serializers import serialize
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, Http404, HttpResponseRedirect
+from django.http import JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -190,7 +190,7 @@ def add_dish(request, format=None):
                 new_dish.image = image_file
                 new_dish.save()
 
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+            return JsonResponse({'message': 'Dish created successfully'}, status=201)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
@@ -200,7 +200,7 @@ def delete_dish(request, dish_id):
     try:
         dish = Dish.objects.get(dish_index=dish_id)
         dish.delete()
-        return  HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        return  JsonResponse({'message': 'Dish deleted successfully'}, status=201)
     except Exception as e:
         return  JsonResponse({'error:': str(e)}, status=400)
 
