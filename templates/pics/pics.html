@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop Details</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h1>Shop Details</h1>
+
+<div id="shop-details">
+    <!-- 这里将显示店铺的详细信息 -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        // 发起 AJAX 请求获取 shop 数据
+        $.ajax({
+            url: '/check_shop/{{ 0 }}/',  // 请将 shop_id 替换为实际的店铺 ID
+            type: 'GET',
+            success: function (data) {
+                // 将 JSON 数据解析为 JavaScript 对象
+                var shop = JSON.parse(data)[0];  // 序列化函数返回的是一个数组，因此我们取第一个元素
+                // 在页面中显示店铺信息
+                $('#shop-details').html('<p>Shop Index: ' + shop.fields.shop_index + '</p>' +
+                                        '<p>Shop Name: ' + shop.fields.shop_name + '</p>' +
+                                        '<p>Canteen Number: ' + shop.fields.canteen_num + '</p>' +
+                                        '<p>Floor: ' + shop.fields.floor + '</p>' +
+                                        '<p>Is Selling: ' + shop.fields.isselling + '</p>' +
+                                        '<img src="' + shop.fields.image + '" alt="Shop Image">');
+            },
+            error: function () {
+                $('#shop-details').html('<p>Error: Unable to fetch shop details.</p>');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

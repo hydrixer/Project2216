@@ -6,7 +6,9 @@ class drink(models.Model):
     def __str__(self):
         return self.name +' FREE!'
 
-
+class Pic(models.Model):
+    name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='media/covers')
 
 class Admin(models.Model):
     admin_num = models.DecimalField(primary_key=True, max_digits=10, decimal_places=0)
@@ -23,6 +25,8 @@ class Dish(models.Model):
     dish_name = models.TextField()
     shop_index = models.ForeignKey('Shop', models.DO_NOTHING, db_column='shop_index')
     price = models.IntegerField()
+    vegan = models.BooleanField()
+    image = models.ImageField(upload_to='media/covers')
 
     class Meta:
         managed = True
@@ -68,9 +72,8 @@ class OrderBill(models.Model):
 class Shop(models.Model):
     shop_index = models.IntegerField(primary_key=True)
     shop_name = models.TextField()
-    canteen_num = models.SmallIntegerField(blank=True, null=True)
-    floor = models.SmallIntegerField(blank=True, null=True)
-    isselling = models.IntegerField()
+    isselling = models.BooleanField()
+    image = models.ImageField(upload_to='media/covers')
 
     class Meta:
         managed = True
