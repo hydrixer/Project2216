@@ -434,7 +434,7 @@ def login(request):
 
 
 @api_view(['POST'])
-def chaneg_userinfo(request):
+def change_userinfo(request):
     try:
         data = request.data
         usertochange = User.objects.get(username=data.get('username'))
@@ -493,4 +493,24 @@ def getinfobyusername(request):
         return JsonResponse(info_data, safe=False)
     except Exception as e:
         return JsonResponse({'error:': str(e)}, status=400)
+
+
+@api_view(['POST'])
+def add_order(request):
+    try:
+        data = request.data
+        for order_data in data:
+            new_order= OrderBill.objects.create()
+            new_order.order_num=OrderBill.objects.count()
+            new_order.price=int(order_data.get('price'))*int(order_data.get('quantity'))
+            new_order.dish_count=order_data.get('quantity')
+            new_order.finished=order_data.get('state')
+            new_order.table=order_data.data.get('tableNum')
+            new_order.note=order_data.get('note')
+            new_order.dish_index=Dish.objects.get(dish_index=order_data.get('dish_index'))
+            new_order.client= User.objects.get(username=order_data.get('username'))
+            new_order.save()
+        return JsonResponse({'message': 'info changed successfully'}, safe=False)
+    except Exception as e:
+        return  JsonResponse({'error': str(e)}, status=400)
 # Create your views here.

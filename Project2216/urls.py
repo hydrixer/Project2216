@@ -32,15 +32,16 @@ urlpatterns = [
     path('addshop',views.add_shop),
     path('adddish',views.add_dish),
     path('menu/<int:shop_id>',views.get_menu),
-    path('owner_menu',views.owner_menu),
+    path('ownermenu',views.owner_menu),
     path('deletedish/<int:dish_id>',views.delete_dish),
     path('modifydish',views.modify_dish),
     path('register',views.register),
     path('login',views.login),
     path('orderhistory',views.order_history),
     path('alluser',views.all_user),
-    path('changeuserinfo',views.chaneg_userinfo),
-    path('getinfobyusername',views.getinfobyusername)
+    path('changeuserinfo',views.change_userinfo),
+    path('getinfobyusername',views.getinfobyusername),
+    path('addorder',views.add_order)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
