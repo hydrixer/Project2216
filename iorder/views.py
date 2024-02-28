@@ -52,25 +52,8 @@ def pic(request, pic_id):
         raise Http404('no such image!')
 
 
-def check_shop(request, shop_id):
-    try:
-        shop = Shop.objects.get(pk=shop_id)
-        shop_dish = shop_dish_view.objects.all()
 
-        shop_data = {
-            "code": 200,
-            "msg": "success",
-            "data":{
-                    'shop_index': shop.shop_index,
-                    'name': shop.shop_name,
-                    'isselling': shop.isselling,
-                    'logo': shop.image.url if shop.image else None
-            }
-        }
-        return JsonResponse(shop_data, safe=False)
-    except Shop.DoesNotExist:
-        return JsonResponse({'error': 'Shop not found'}, status=404)
-
+@api_view(['POST','GET'])
 def all_shop(request):
     try:
         first_shops = Shop.objects.all()
@@ -89,6 +72,24 @@ def all_shop(request):
             "msg": "success",
             "data":{
                 "list": list
+            }
+        }
+        return JsonResponse(shop_data, safe=False)
+    except Shop.DoesNotExist:
+        return JsonResponse({'error': 'Shop not found'}, status=404)
+
+def check_shop(request, shop_id):
+    try:
+        shop = Shop.objects.get(pk=shop_id)
+
+        shop_data = {
+            "code": 200,
+            "msg": "success",
+            "data":{
+                    'shop_index': shop.shop_index,
+                    'name': shop.shop_name,
+                    'isselling': shop.isselling,
+                    'logo': shop.image.url if shop.image else None
             }
         }
         return JsonResponse(shop_data, safe=False)
@@ -116,6 +117,9 @@ def add_shop(request, format=None):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
+
+
+@api_view(['GET','POST'])
 def check_dish(request, dish_index, shop_index,format=None):
     try:
         dish = Dish.objects.get(dish_index=dish_index, shop_index=shop_index)
@@ -262,6 +266,45 @@ def get_menu(request, shop_id):
         return JsonResponse({'error': 'Shopmenu not found'}, status=404)
 
 
+@api_view(['GET','POST'])
+def owner_menu(request):
+    if request.method == 'POST':
+        username = request.data.get('username')
+        # 对于GET请求，从URL参数中获取username
+    else:
+        username = request.query_params.get('username')
+    try:
+        shop = Shop.objects.get(host=User.objects.get(username=username))
+        shop_dish = Dish.objects.filter(shop_index=shop.shop_index)
+        list = []
+        for dish in shop_dish:
+            list.append(
+                {
+                    'dish_index': dish.dish_index,
+                    'shop_index': dish.shop_index.shop_index,
+                    'dish_name': dish.dish_name,
+                    'price': dish.price,
+                    'vegan': dish.vegan,
+                    'description': dish.description,
+                    'image': dish.image.url if dish.image else None,
+                }
+            )
+        shop_data = {
+            "code": 200,
+            "msg": "success",
+            "data":{
+                    'shop_index': shop.shop_index,
+                    'name': shop.shop_name,
+                    'isselling': shop.isselling,
+                    'logo': shop.image.url if shop.image else None
+            }
+        }
+        return JsonResponse(shop_data, safe=False)
+    except Shop.DoesNotExist:
+        return JsonResponse({'error': 'Shop not found'}, status=404)
+
+
+
 def user_detail(request, user_id, format=None):
     try:
         user = User.objects.get(id=user_id)
@@ -281,10 +324,10 @@ def user_detail(request, user_id, format=None):
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
 
-@api_view(['POST','GET'])
+@api_view(['GET'])
 def order_history(request, format=None):
     try:
-        user = User.objects.get(username=request.data.get('username'))
+        user = User.objects.get(username=request.query_params.get('username'))
         category = user.category
         if(category==1): #user
             userhistory = OrderBill.objects.filter(client=user)
@@ -308,7 +351,7 @@ def order_history(request, format=None):
                 }
             }
         elif(category==2):
-            userhistory = OrderBill.objects.filter(user.shop)
+            userhistory = OrderBill.objects.filter(shop_index=user.shop.shop_index)
             list = []
             for aorder in userhistory:
                 list.append(

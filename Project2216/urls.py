@@ -32,6 +32,7 @@ urlpatterns = [
     path('addshop',views.add_shop),
     path('adddish',views.add_dish),
     path('menu/<int:shop_id>',views.get_menu),
+    path('owner_menu',views.owner_menu),
     path('deletedish/<int:dish_id>',views.delete_dish),
     path('modifydish',views.modify_dish),
     path('register',views.register),
