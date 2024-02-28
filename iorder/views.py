@@ -339,18 +339,20 @@ def register(request):
         return JsonResponse({'error': str(e)}, status=400)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def login(request):
     data = request.data
     user1= User.objects.get(data.get('username'))
-    if user1 is not None:
+    if user1 is None:
         return JsonResponse({'error: user not found'}, status=400)
     elif user1.password==data.get('password'):
         login_data = {
             "code": 200,
             "msg": "success",
             "data": {
-                'result':1
+                'result':1,
+                'username':user1.username,
+                'token':user1.token
             }
         }
     else:
