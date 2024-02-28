@@ -213,7 +213,7 @@ def modify_dish(request, format=None):
             modify_dish.dish_name = data.get('dish_name')
             modify_dish.price = data.get('price')
             modify_dish.description = data.get('description')
-            modify_dish.vegan = data.get('vegan',default_vegan)
+            modify_dish.vegan = True if data.get('vegan',default_vegan) == True else False
             image_file = request.FILES.get('image')
             if image_file:
                 modify_dish.image = image_file
