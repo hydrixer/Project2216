@@ -106,7 +106,7 @@ def add_shop(request, format=None):
                 shop_name=data.get('shop_name'),
                 shop_index=Shop.objects.count(),
                 isselling=True,
-                host=User.objects.get(data.get('username'))
+                host=User.objects.get(username=data.get('username'))
             )
             image_file = request.FILES.get('image')
             if image_file:
