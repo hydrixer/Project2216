@@ -64,7 +64,7 @@ def all_shop(request):
                     'shop_index': ashop.shop_index,
                     'name': ashop.shop_name,
                     'isselling': ashop.isselling,
-                    'logo': ashop.image.url if ashop.image else None,
+                    'image': ashop.image.url if ashop.image else None,
                 }
             )
         shop_data = {
@@ -89,7 +89,7 @@ def check_shop(request, shop_id):
                     'shop_index': shop.shop_index,
                     'name': shop.shop_name,
                     'isselling': shop.isselling,
-                    'logo': shop.image.url if shop.image else None
+                    'image': shop.image.url if shop.image else None
             }
         }
         return JsonResponse(shop_data, safe=False)
