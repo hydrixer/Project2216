@@ -62,7 +62,7 @@ def all_shop(request):
             list.append(
                 {
                     'shop_index': ashop.shop_index,
-                    'name': ashop.shop_name,
+                    'shop_name': ashop.shop_name,
                     'isselling': ashop.isselling,
                     'image': ashop.image.url if ashop.image else None,
                 }
