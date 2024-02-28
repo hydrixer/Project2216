@@ -228,12 +228,10 @@ def modify_dish(request, format=None):
 def delete_dish(request, dish_id):
     try:
         dish = Dish.objects.get(dish_index=dish_id)
-        image_path = dish.image
-        if os.path.exists(image_path):
-            # 删除文件
-            os.remove(image_path)
+        if dish.image is not None:
+            dish.image.delete()
         else:
-            print(f"The file {image_path} does not exist.")
+            print(f"The file  does not exist.")
         dish.delete()
         return  JsonResponse({'message': 'Dish deleted successfully'}, status=201)
     except Exception as e:
