@@ -39,7 +39,8 @@ urlpatterns = [
     path('login',views.login),
     path('orderhistory',views.order_history),
     path('alluser',views.all_user),
-    path('changeuserinfo',views.chaneg_userinfo)
+    path('changeuserinfo',views.chaneg_userinfo),
+    path('getinfobyusername',views.getinfobyusername)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

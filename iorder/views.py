@@ -469,7 +469,28 @@ def all_user(request):
             }
         }
         return JsonResponse(shop_data, safe=False)
-    except Shop.DoesNotExist:
-        return JsonResponse({'error': 'Shop not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error:': str(e)}, status=400)
 
+
+@api_view(['GET'])
+def getinfobyusername(request):
+    try:
+        username = request.query_params.get('username')
+        user = User.objects.get(username=username)
+        info_data = {
+            "code": 200,
+            "msg": "success",
+            "data": {
+                'username':user.username,
+                'password':user.password,
+                'telephone':user.telephone,
+                'category':user.category,
+                'email':user.email,
+                'token':user.token
+            }
+        }
+        return JsonResponse(info_data, safe=False)
+    except Exception as e:
+        return JsonResponse({'error:': str(e)}, status=400)
 # Create your views here.
