@@ -198,6 +198,26 @@ def add_dish(request, format=None):
             return JsonResponse({'error': str(e)}, status=400)
 
 
+@api_view(['POST'])
+def modify_dish(request, format=None):
+        data = request.data
+        try:
+            modify_dish = Dish.objects.get(dish_index=data.get('index'))
+            default_vegan = modify_dish.vegan
+            modify_dish.dish_name = data.get('dish_name')
+            modify_dish.price = data.get('price')
+            modify_dish.description = data.get('description')
+            modify_dish.vegan = data.get('vegan',default_vegan)
+            image_file = request.FILES.get('image')
+            if image_file:
+                modify_dish.image = image_file
+            modify_dish.save()
+
+            return JsonResponse({'message': 'Dish modified successfully'}, status=201)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+
 @api_view(['DELETE'])
 def delete_dish(request, dish_id):
     try:

@@ -33,6 +33,7 @@ urlpatterns = [
     path('adddish',views.add_dish),
     path('menu/<int:shop_id>',views.get_menu),
     path('deletedish/<int:dish_id>',views.delete_dish),
+    path('modifydish',views.modify_dish),
     path('register',views.register),
     path('login',views.login),
     path('orderhistory',views.order_history),
