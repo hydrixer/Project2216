@@ -497,15 +497,16 @@ def add_order(request):
     try:
         data = request.data
         for order_data in data:
-            new_order= OrderBill.objects.create()
-            new_order.order_num=OrderBill.objects.count()
-            new_order.price=int(order_data.get('price'))*int(order_data.get('quantity'))
-            new_order.dish_count=order_data.get('quantity')
-            new_order.finished=order_data.get('state')
-            new_order.table=order_data.data.get('tableNum')
-            new_order.note=order_data.get('note')
-            new_order.dish_index=Dish.objects.get(dish_index=order_data.get('dish_index'))
-            new_order.client= User.objects.get(username=order_data.get('username'))
+            new_order= OrderBill.objects.create(
+                order_num=OrderBill.objects.count(),
+                price=int(order_data.get('price'))*int(order_data.get('quantity')),
+                dish_count=order_data.get('quantity'),
+                finished=order_data.get('state'),
+                table=order_data.data.get('tableNum'),
+                note=order_data.get('note'),
+                dish_index=Dish.objects.get(dish_index=order_data.get('dish_index')),
+                client= User.objects.get(username=order_data.get('username'))
+            )
             new_order.save()
         return JsonResponse({'message': 'info changed successfully'}, safe=False)
     except Exception as e:
