@@ -35,7 +35,7 @@ urlpatterns = [
     path('deletedish/<int:dish_id>',views.delete_dish),
     path('register',views.register),
     path('login',views.login),
-    path('orderhistory',views.order_history)
+    path('orderhistory',views.order_history),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -313,6 +313,12 @@ def order_history(request, format=None):
         return JsonResponse({'error': 'Order not found'}, status=404)
 
 
+
+# @api_view(['POST'])
+# def place_order(request):
+#
+
+
 @api_view(['POST'])
 def register(request):
     data = request.data
@@ -349,8 +355,8 @@ def login(request):
         }
     else:
         login_data = {
-            "code": 200,
-            "msg": "success",
+            "code": 888,
+            "msg": "Failed",
             "data": {
                 'result': 0
             }
