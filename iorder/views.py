@@ -293,10 +293,7 @@ def owner_menu(request):
             "code": 200,
             "msg": "success",
             "data":{
-                    'shop_index': shop.shop_index,
-                    'name': shop.shop_name,
-                    'isselling': shop.isselling,
-                    'logo': shop.image.url if shop.image else None
+                "list":list
             }
         }
         return JsonResponse(shop_data, safe=False)
