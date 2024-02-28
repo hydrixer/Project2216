@@ -370,7 +370,8 @@ def login(request):
     return JsonResponse(login_data, safe=False)
 
 
-def all_user(request,shop_index):
+@api_view(['GET'])
+def all_user(request):
     try:
         allusers = User.objects.all()
         list=[]
