@@ -444,6 +444,7 @@ def chaneg_userinfo(request):
         email = data.get('email')
         if email is not None and telephone != '':
             usertochange.email=email
+        usertochange.save()
         return JsonResponse({'message': 'info changed successfully'}, status=201)
     except User.DoesNotExist:
         return JsonResponse({'error': 'user not found'}, status=404)
