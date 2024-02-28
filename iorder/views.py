@@ -355,6 +355,7 @@ def login(request):
                 'password':user1.password,
                 'telephone':user1.telephone,
                 'email':user1.email,
+                'category':user1.category,
                 'token':user1.token
             }
         }
