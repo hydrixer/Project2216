@@ -36,6 +36,7 @@ urlpatterns = [
     path('register',views.register),
     path('login',views.login),
     path('orderhistory',views.order_history),
+    path('alluser',views.all_user())
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

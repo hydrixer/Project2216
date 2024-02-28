@@ -369,4 +369,27 @@ def login(request):
         }
     return JsonResponse(login_data, safe=False)
 
+
+def all_user(request,shop_index):
+    try:
+        allusers = User.objects.all()
+        list=[]
+        for user in allusers:
+            list.append(
+                {
+                    'username':user.username,
+                    'password':user.password
+                }
+            )
+        shop_data = {
+            "code": 200,
+            "msg": "success",
+            "data":{
+                "list": list
+            }
+        }
+        return JsonResponse(shop_data, safe=False)
+    except Shop.DoesNotExist:
+        return JsonResponse({'error': 'Shop not found'}, status=404)
+
 # Create your views here.
