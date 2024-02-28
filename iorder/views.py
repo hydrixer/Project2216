@@ -316,9 +316,9 @@ def order_history(request, format=None):
 @api_view(['POST'])
 def register(request):
     data = request.data
-    user1= User.objects.get(data.get('username'))
+    user1 = User.objects.filter(username=data.get('username')).first()
     if user1 is not None:
-        return JsonResponse({'error: username occupied'}, status=400)
+        return JsonResponse({'error': 'username occupied'}, status=400)
     try:
         new_user = User.objects.create(
             username=data.get('username'),
@@ -328,7 +328,7 @@ def register(request):
             email = data.get('email')
         )
         new_user.save()
-        return JsonResponse({'message': 'Dish created successfully'}, status=201)
+        return JsonResponse({'message': 'Account created successfully'}, status=201)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
