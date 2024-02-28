@@ -208,7 +208,7 @@ def add_dish(request, format=None):
 def modify_dish(request, format=None):
         data = request.data
         try:
-            modify_dish = Dish.objects.get(dish_index=data.get('index'))
+            modify_dish = Dish.objects.get(dish_index=data.get('dish_index'))
             default_vegan = modify_dish.vegan
             modify_dish.dish_name = data.get('dish_name')
             modify_dish.price = data.get('price')
