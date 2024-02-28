@@ -184,10 +184,12 @@ def all_dish(request,shop_index):
 def add_dish(request, format=None):
         data = request.data
         try:
+            username=data.get('username')
+            user = User.objects.get(username=username)
             new_dish = Dish.objects.create(
                 dish_index=Dish.objects.count(),
                 dish_name=data.get('dish_name'),
-                shop_index=Shop.objects.get(shop_index=data.get('shop_index')),
+                shop_index=user.shop,
                 price=data.get('price'),
                 description=data.get('description'),
                 vegan = True if data.get('vegan') == "true" else False,
