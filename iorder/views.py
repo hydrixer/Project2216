@@ -502,7 +502,7 @@ def add_order(request):
                 price=int(order_data.get('price'))*int(order_data.get('quantity')),
                 dish_count=order_data.get('quantity'),
                 finished=order_data.get('state'),
-                table=order_data.data.get('tableNum'),
+                table=order_data.get('tableNum'),
                 note=order_data.get('note'),
                 dish_index=Dish.objects.get(dish_index=order_data.get('dish_index')),
                 client= User.objects.get(username=order_data.get('username'))
