@@ -433,6 +433,21 @@ def login(request):
     return JsonResponse(login_data, safe=False)
 
 
+@api_view(['POST'])
+def chaneg_userinfo(request):
+    try:
+        data = request.data
+        usertochange = User.objects.get(username=data.get('username'))
+        telephone = data.get('telephone')
+        if telephone is not None and telephone != '':
+            usertochange.telephone = telephone
+        email = data.get('email')
+        if email is not None and telephone != '':
+            usertochange.email=email
+        return JsonResponse({'message': 'Dish deleted successfully'}, status=201)
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'user not found'}, status=404)
+
 @api_view(['GET'])
 def all_user(request):
     try:
