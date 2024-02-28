@@ -352,6 +352,9 @@ def login(request):
             "data": {
                 'result':1,
                 'username':user1.username,
+                'password':user1.password,
+                'telephone':user1.telephone,
+                'email':user1.email,
                 'token':user1.token
             }
         }
