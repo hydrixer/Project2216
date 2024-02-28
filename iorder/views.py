@@ -274,7 +274,8 @@ def owner_menu(request):
     else:
         username = request.query_params.get('username')
     try:
-        print(username)
+        with open('example.txt', 'w') as file:
+            file.write(username)
         shop = Shop.objects.get(host=User.objects.get(username=username))
         shop_dish = Dish.objects.filter(shop_index=shop.shop_index)
         list = []
