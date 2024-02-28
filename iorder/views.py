@@ -104,12 +104,13 @@ def add_shop(request, format=None):
             new_shop = Shop.objects.create(
                 shop_name=data.get('shop_name'),
                 shop_index=Shop.objects.count(),
-                isselling=False,
+                isselling=True,
+                host=User.objects.get(data.get('username'))
             )
             image_file = request.FILES.get('image')
             if image_file:
                 new_shop.image = image_file
-                new_shop.save()
+            new_shop.save()
 
             return JsonResponse({'message': 'Shop created successfully'}, status=201)
         except Exception as e:
@@ -190,7 +191,7 @@ def add_dish(request, format=None):
             image_file = request.FILES.get('image')
             if image_file:
                 new_dish.image = image_file
-                new_dish.save()
+            new_dish.save()
 
             return JsonResponse({'message': 'Dish created successfully'}, status=201)
         except Exception as e:
@@ -260,30 +261,100 @@ def user_detail(request, user_id, format=None):
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
 
-def order_history(request, order_num, format=None):
+@api_view(['POST','GET'])
+def order_history(request, format=None):
     try:
-        order = OrderBill.objects.get(order_num=order_num)
-        order_data = {
-            "code": 200,
-            "msg": "success",
-            "data": {
-                'order_num': order.order_num,
-                'dish_index': order.dish_index.dish_name,
-                'stu_num': order.stu_num.stu_name if order.stu_num else None,
-                'dish_count': order.dish_count,
-                'price': order.price,
-                'create_time': order.create_time,
-                'finished': order.finished,
-                'shop_index': order.shop_index,
+        user = User.objects.get(username=request.data.get('username'))
+        category = user.category
+        if(category==1): #user
+            userhistory = OrderBill.objects.filter(client=user)
+            list = []
+            for aorder in userhistory:
+                list.append(
+                    {
+                        'dish_name': aorder.dish_index.dish_name,
+                        'dish_count': aorder.dish_count,
+                        'tablenumber': aorder.table,
+                        'create_time': aorder.create_time,
+                        'note': aorder.note,
+                        'finished': aorder.finished,
+                    }
+                )
+            order_data = {
+                "code": 200,
+                "msg": "success",
+                "data": {
+                    "list": list
+                }
             }
-        }
+        elif(category==2):
+            userhistory = OrderBill.objects.filter(user.shop)
+            list = []
+            for aorder in userhistory:
+                list.append(
+                    {
+                        'dish_name': aorder.dish_index.dish_name,
+                        'dish_count': aorder.dish_count,
+                        'tablenumber': aorder.table,
+                        'create_time': aorder.create_time,
+                        'note': aorder.note,
+                        'finished': aorder.finished,
+                    }
+                )
+            order_data = {
+                "code": 200,
+                "msg": "success",
+                "data": {
+                    "list": list
+                }
+            }
         return JsonResponse(order_data, safe=False)
     except OrderBill.DoesNotExist:
         return JsonResponse({'error': 'Order not found'}, status=404)
 
 
+@api_view(['POST'])
+def register(request):
+    data = request.data
+    user1= User.objects.get(data.get('username'))
+    if user1 is not None:
+        return JsonResponse({'error: username occupied'}, status=400)
+    try:
+        new_user = User.objects.create(
+            username=data.get('username'),
+            password=data.get('password'),
+            category = data.get('category'),
+            telephone = data.get('telephone'),
+            email = data.get('email')
+        )
+        new_user.save()
+        return JsonResponse({'message': 'Dish created successfully'}, status=201)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
 
 
-
+@api_view(['GET'])
+def login(request):
+    data = request.data
+    user1= User.objects.get(data.get('username'))
+    if user1 is not None:
+        return JsonResponse({'error: user not found'}, status=400)
+    elif user1.password==data.get('password'):
+        login_data = {
+            "code": 200,
+            "msg": "success",
+            "data": {
+                'result':1
+            }
+        }
+    else:
+        login_data = {
+            "code": 200,
+            "msg": "success",
+            "data": {
+                'result': 0
+            }
+        }
+    return JsonResponse(login_data, safe=False)
 
 # Create your views here.
