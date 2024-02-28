@@ -87,7 +87,7 @@ def check_shop(request, shop_id):
             "msg": "success",
             "data":{
                     'shop_index': shop.shop_index,
-                    'name': shop.shop_name,
+                    'shop_name': shop.shop_name,
                     'isselling': shop.isselling,
                     'image': shop.image.url if shop.image else None
             }
