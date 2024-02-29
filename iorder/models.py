@@ -42,7 +42,7 @@ class OrderBill(models.Model):
     dish_count = models.IntegerField()
     price = models.IntegerField()
     create_time = models.TimeField()
-    finished = models.BooleanField()
+    finished = models.TextField()
     table = models.IntegerField()
     note = models.TextField()
     shop_index = models.IntegerField()
