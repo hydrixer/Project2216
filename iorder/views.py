@@ -522,6 +522,7 @@ def orderstatechange(request):
         data = request.data
         order= OrderBill.objects.get(order_num=data.get('order_num'))
         order.finished=data.get('state')
+        return JsonResponse({'message': 'state changed successfully'}, safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
