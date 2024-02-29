@@ -322,63 +322,6 @@ def user_detail(request, user_id, format=None):
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
 
-@api_view(['GET'])
-def order_history(request, format=None):
-    try:
-        user = User.objects.get(username=request.query_params.get('username'))
-        category = user.category
-        if(category==1): #user
-            userhistory = OrderBill.objects.filter(client=user)
-            list = []
-            for aorder in userhistory:
-                list.append(
-                    {
-                        'name': aorder.dish_index.dish_name,
-                        'quantity': aorder.dish_count,
-                        'tableNum': aorder.table,
-                        'create_time': aorder.create_time,
-                        'note': aorder.note,
-                        'state': aorder.finished,
-                    }
-                )
-            order_data = {
-                "code": 200,
-                "msg": "success",
-                "data": {
-                    "list": list
-                }
-            }
-        elif(category==2):
-            userhistory = OrderBill.objects.filter(shop_index=user.shop.shop_index)
-            list = []
-            for aorder in userhistory:
-                list.append(
-                    {
-                        'name': aorder.dish_index.dish_name,
-                        'quantity': aorder.dish_count,
-                        'tableNum': aorder.table,
-                        'create_time': aorder.create_time,
-                        'note': aorder.note,
-                        'state': aorder.finished,
-                    }
-                )
-            order_data = {
-                "code": 200,
-                "msg": "success",
-                "data": {
-                    "list": list
-                }
-            }
-        return JsonResponse(order_data, safe=False)
-    except OrderBill.DoesNotExist:
-        return JsonResponse({'error': 'Order not found'}, status=404)
-
-
-
-# @api_view(['POST'])
-# def place_order(request):
-#
-
 
 @api_view(['POST'])
 def register(request):
@@ -514,4 +457,69 @@ def add_order(request):
         return JsonResponse({'message': 'info changed successfully'}, safe=False)
     except Exception as e:
         return  JsonResponse({'error': str(e)}, status=400)
+
+
+@api_view(['GET'])
+def order_history(request, format=None):
+    try:
+        user = User.objects.get(username=request.query_params.get('username'))
+        category = user.category
+        if(category==1): #user
+            userhistory = OrderBill.objects.filter(client=user)
+            list = []
+            for aorder in userhistory:
+                list.append(
+                    {
+                        'name': aorder.dish_index.dish_name,
+                        'quantity': aorder.dish_count,
+                        'tableNum': aorder.table,
+                        'create_time': aorder.create_time,
+                        'note': aorder.note,
+                        'state': aorder.finished,
+                    }
+                )
+            order_data = {
+                "code": 200,
+                "msg": "success",
+                "data": {
+                    "list": list
+                }
+            }
+        elif(category==2):
+            userhistory = OrderBill.objects.filter(shop_index=user.shop.shop_index)
+            list = []
+            for aorder in userhistory:
+                list.append(
+                    {
+                        'name': aorder.dish_index.dish_name,
+                        'quantity': aorder.dish_count,
+                        'tableNum': aorder.table,
+                        'create_time': aorder.create_time,
+                        'note': aorder.note,
+                        'state': aorder.finished,
+                        'order_num':aorder.order_num
+                    }
+                )
+            order_data = {
+                "code": 200,
+                "msg": "success",
+                "data": {
+                    "list": list
+                }
+            }
+        return JsonResponse(order_data, safe=False)
+    except OrderBill.DoesNotExist:
+        return JsonResponse({'error': 'Order not found'}, status=404)
+
+
+@api_view(['POST'])
+def orderstatechange(request):
+    try:
+        data = request.data
+        order= OrderBill.objects.get(order_num=data.get('order_num'))
+        order.finished=data.get('state')
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
 # Create your views here.
