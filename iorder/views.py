@@ -333,12 +333,12 @@ def order_history(request, format=None):
             for aorder in userhistory:
                 list.append(
                     {
-                        'dish_name': aorder.dish_index.dish_name,
-                        'dish_count': aorder.dish_count,
-                        'tablenumber': aorder.table,
+                        'name': aorder.dish_index.dish_name,
+                        'quantity': aorder.dish_count,
+                        'tableNum': aorder.table,
                         'create_time': aorder.create_time,
                         'note': aorder.note,
-                        'finished': aorder.finished,
+                        'state': aorder.finished,
                     }
                 )
             order_data = {
@@ -354,12 +354,12 @@ def order_history(request, format=None):
             for aorder in userhistory:
                 list.append(
                     {
-                        'dish_name': aorder.dish_index.dish_name,
-                        'dish_count': aorder.dish_count,
-                        'tablenumber': aorder.table,
+                        'name': aorder.dish_index.dish_name,
+                        'quantity': aorder.dish_count,
+                        'tableNum': aorder.table,
                         'create_time': aorder.create_time,
                         'note': aorder.note,
-                        'finished': aorder.finished,
+                        'state': aorder.finished,
                     }
                 )
             order_data = {
