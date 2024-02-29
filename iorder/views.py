@@ -2,6 +2,7 @@ import datetime
 import os
 
 from django.core.serializers import serialize
+from django.db.models import Max
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
@@ -185,10 +186,13 @@ def all_dish(request,shop_index):
 def add_dish(request, format=None):
         data = request.data
         try:
+            last_dish_index = Dish.objects.all().aggregate(max_index=Max('dish_index'))['max_index'] or 0
+            new_dish_index = last_dish_index + 1
+
             username=data.get('username')
             user = User.objects.get(username=username)
             new_dish = Dish.objects.create(
-                dish_index=Dish.objects.count(),
+                dish_index=new_dish_index,
                 dish_name=data.get('dish_name'),
                 shop_index=user.shop,
                 price=data.get('price'),
