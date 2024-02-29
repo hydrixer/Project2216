@@ -41,7 +41,8 @@ urlpatterns = [
     path('alluser',views.all_user),
     path('changeuserinfo',views.change_userinfo),
     path('getinfobyusername',views.getinfobyusername),
-    path('addorder',views.add_order)
+    path('addorder',views.add_order),
+    path('orderstatechange',views.orderstatechange)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
