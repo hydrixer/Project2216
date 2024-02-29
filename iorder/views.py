@@ -352,7 +352,7 @@ def login(request):
     data = request.data
     user1 = User.objects.filter(username=data.get('username')).first()
     if user1 is None:
-        return JsonResponse({'error': 'user not found'}, status=400, safe=False)
+        return JsonResponse({'error': 'user not found'}, status=400)
     elif user1.password==data.get('password'):
         login_data = {
             "code": 200,
