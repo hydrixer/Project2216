@@ -507,7 +507,8 @@ def add_order(request):
                 note=order_data.get('note'),
                 dish_index=Dish.objects.get(dish_index=order_data.get('dish_index')),
                 client= User.objects.get(username=order_data.get('username')),
-                create_time=datetime.datetime.now()
+                create_time=datetime.datetime.now(),
+                shop_index=order_data.get('shop_index')
             )
             new_order.save()
         return JsonResponse({'message': 'info changed successfully'}, safe=False)
